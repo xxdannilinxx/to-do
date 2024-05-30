@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -40,9 +42,9 @@ public class Task {
     @Size(groups = { Create.class, Update.class }, max = 250, message = "Task title must be 250 characters or less")
     private String description;
 
-    @Column(name = "date", nullable = false, updatable = false)
+    @Column(name = "date", nullable = false)
     @NotNull(groups = { Create.class, Update.class }, message = "Task date is required")
-    private String date;
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
