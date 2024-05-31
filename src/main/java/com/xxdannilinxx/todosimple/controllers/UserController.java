@@ -43,13 +43,9 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> findById(@PathVariable("id") Long id) {
-        try {
-            User user = this.userService.findById(id);
+        User user = this.userService.findById(id);
 
-            return ResponseEntity.ok().body(user.toString());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok().body(user.toString());
     }
 
     @PostMapping("/")
@@ -60,15 +56,11 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> create(@Valid @RequestBody User u) {
-        try {
-            User user = this.userService.create(u);
-            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId())
-                    .toUri();
+        User user = this.userService.create(u);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId())
+                .toUri();
 
-            return ResponseEntity.created(uri).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.created(uri).build();
     }
 
     @PatchMapping("/{id}")
@@ -79,15 +71,10 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> update(@PathVariable("id") Long id, @Valid @RequestBody User user) {
-        try {
-            user.setId(id);
+        user.setId(id);
+        this.userService.update(user);
 
-            this.userService.update(user);
-
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
@@ -97,12 +84,8 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        try {
-            this.userService.delete(id);
+        this.userService.delete(id);
 
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.noContent().build();
     }
 }

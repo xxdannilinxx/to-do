@@ -44,13 +44,9 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> findById(@PathVariable("id") Long id) {
-        try {
-            Task task = this.taskService.findById(id);
+        Task task = this.taskService.findById(id);
 
-            return ResponseEntity.ok().body(task.toString());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok().body(task.toString());
     }
 
     @GetMapping("/user/{userId}")
@@ -60,13 +56,9 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> findByUserId(@PathVariable("userId") Long userId) {
-        try {
-            List<Task> tasks = this.taskService.findByUser(userId);
+        List<Task> tasks = this.taskService.findByUser(userId);
 
-            return ResponseEntity.ok().body(tasks.toString());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok().body(tasks.toString());
     }
 
     @PostMapping("/")
@@ -77,16 +69,12 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> create(@Valid @RequestBody Task t) {
-        try {
-            Task task = this.taskService.create(t);
+        Task task = this.taskService.create(t);
 
-            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(task.getId())
-                    .toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(task.getId())
+                .toUri();
 
-            return ResponseEntity.created(uri).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.created(uri).build();
     }
 
     @PatchMapping("/{id}")
@@ -97,13 +85,9 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> update(@PathVariable("id") Long id, @Valid @RequestBody Task task) {
-        try {
-            this.taskService.update(task);
+        this.taskService.update(task);
 
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
@@ -113,13 +97,8 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        try {
-            this.taskService.delete(id);
+        this.taskService.delete(id);
 
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.noContent().build();
     }
-
 }
