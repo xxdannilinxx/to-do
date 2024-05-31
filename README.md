@@ -15,3 +15,6 @@ windows
 ```$env:PATH = $env:PATH + ';' + $env:JAVA_HOME + '\bin;' + $env:MAVEN_HOME + '\bin'```
 
 ```mvn clean install```
+
+# docs
+http://localhost:8080/docs/index.html

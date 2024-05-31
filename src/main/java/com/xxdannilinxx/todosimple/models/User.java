@@ -1,5 +1,6 @@
 package com.xxdannilinxx.todosimple.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -19,10 +21,10 @@ import java.util.Objects;
 @Entity
 @Table(name = User.TABLE_NAME)
 public class User {
-    public interface Create {
+    public interface CreateUser {
     }
 
-    public interface Update {
+    public interface UpdateUser {
     }
 
     public static final String TABLE_NAME = "user";
@@ -33,30 +35,26 @@ public class User {
     private Long id;
 
     @Column(name = "name", nullable = false, length = 50)
-    @NotNull(groups = Create.class, message = "Name is required")
-    @Size(groups = Create.class, min = 5, max = 50, message = "Name must be between 5 and 50 characters")
+    @NotNull(groups = CreateUser.class, message = "Name is required")
+    @Size(groups = CreateUser.class, min = 5, max = 50, message = "Name must be between 5 and 50 characters")
     private String name;
 
     @Column(name = "username", nullable = false, length = 100, unique = true, updatable = false)
-    @NotNull(groups = Create.class, message = "Username is required")
-    @Size(groups = Create.class, min = 5, max = 100, message = "Name must be between 5 and 100 characters")
+    @NotNull(groups = CreateUser.class, message = "Username is required")
+    @Size(groups = CreateUser.class, min = 5, max = 100, message = "Name must be between 5 and 100 characters")
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, length = 100)
-    @NotNull(groups = { Create.class, Update.class }, message = "Password is required")
-    @Size(groups = { Create.class,
-            Update.class }, min = 5, max = 100, message = "Name must be between 5 and 100 characters")
+    @NotNull(groups = { CreateUser.class, UpdateUser.class }, message = "Password is required")
+    @Size(groups = { CreateUser.class,
+            UpdateUser.class }, min = 5, max = 100, message = "Name must be between 5 and 100 characters")
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
 
-    public User(Long id, String name, String username, String password) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.password = password;
+    public User() {
     }
 
     public Long getId() {
@@ -83,6 +81,7 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
@@ -91,6 +90,7 @@ public class User {
         this.password = password;
     }
 
+    @JsonIgnore
     public List<Task> getTasks() {
         return this.tasks;
     }

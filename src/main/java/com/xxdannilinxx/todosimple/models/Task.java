@@ -11,16 +11,18 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = Task.TABLE_NAME)
 public class Task {
-    public interface Create {
+    public interface CreateTask {
     }
 
-    public interface Update {
+    public interface UpdateTask {
     }
 
     public static final String TABLE_NAME = "task";
@@ -28,34 +30,29 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    @NotNull(groups = { Create.class, Update.class }, message = "Task id is required")
     private Long id;
 
     @Column(name = "title", nullable = false, length = 100)
-    @NotNull(groups = { Create.class, Update.class }, message = "Task title is required")
-    @Size(groups = { Create.class,
-            Update.class }, min = 2, max = 100, message = "Task title must be between 2 and 100 characters")
+    @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task title is required")
+    @Size(groups = { CreateTask.class,
+            UpdateTask.class }, min = 2, max = 100, message = "Task title must be between 2 and 100 characters")
     private String title;
 
     @Column(name = "description", nullable = true, length = 250)
-    @NotNull(groups = { Create.class, Update.class }, message = "Task description is required")
-    @Size(groups = { Create.class, Update.class }, max = 250, message = "Task title must be 250 characters or less")
+    @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task description is required")
+    @Size(groups = { CreateTask.class,
+            UpdateTask.class }, max = 250, message = "Task title must be 250 characters or less")
     private String description;
 
     @Column(name = "date", nullable = false)
-    @NotNull(groups = { Create.class, Update.class }, message = "Task date is required")
+    @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task date is required")
     private Date date;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Task(Long id, String title, String description, String date, User user) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.date = date;
-        this.user = user;
+    public Task() {
     }
 
     public Long getId() {
@@ -82,11 +79,12 @@ public class Task {
         this.description = description;
     }
 
-    public String getDate() {
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date getDate() {
         return this.date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
