@@ -27,36 +27,36 @@ import java.util.Date;
 @Setter
 @EqualsAndHashCode
 public class Task {
-    public interface CreateTask {
-    }
+        public interface CreateTask {
+        }
 
-    public interface UpdateTask {
-    }
+        public interface UpdateTask {
+        }
 
-    public static final String TABLE_NAME = "task";
+        public static final String TABLE_NAME = "task";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "id", unique = true, nullable = false)
+        private Long id;
 
-    @Column(name = "title", nullable = false, length = 100)
-    @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task title is required")
-    @Size(groups = { CreateTask.class,
-            UpdateTask.class }, min = 2, max = 100, message = "Task title must be between 2 and 100 characters")
-    private String title;
+        @Column(name = "title", nullable = false, length = 100)
+        @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task title is required")
+        @Size(groups = { CreateTask.class,
+                        UpdateTask.class }, min = 2, max = 100, message = "Task title must be between 2 and 100 characters")
+        private String title;
 
-    @Column(name = "description", nullable = true, length = 250)
-    @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task description is required")
-    @Size(groups = { CreateTask.class,
-            UpdateTask.class }, max = 250, message = "Task title must be 250 characters or less")
-    private String description;
+        @Column(name = "description", nullable = true, length = 250)
+        @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task description is required")
+        @Size(groups = { CreateTask.class,
+                        UpdateTask.class }, max = 250, message = "Task title must be 250 characters or less")
+        private String description;
 
-    @Column(name = "date", nullable = false)
-    @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task date is required")
-    private Date date;
+        @Column(name = "date", nullable = false)
+        @NotNull(groups = { CreateTask.class, UpdateTask.class }, message = "Task date is required")
+        private Date date;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+        @ManyToOne
+        @JoinColumn(name = "user_id", nullable = false)
+        private User user;
 }

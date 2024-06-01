@@ -20,6 +20,10 @@ public class UserService {
     }
 
     public User findById(Long id) {
+        if (id == null) {
+            throw new RuntimeException("id cannot be null");
+        }
+
         Optional<User> user = this.userRepository.findById(id);
 
         return user.orElseThrow(() -> new ObjectNotFoundException("User not found"));
