@@ -1,0 +1,13 @@
+# Spring cloud gateway configuration
+# precisa adicionar o pacote no maven
+# spring:
+#   cloud:
+#     gateway:
+#       routes:
+#         - id: hello-word
+#           uri: https://httpbin.org/
+#           predicates:
+#             - Path=/hello
+#           filters:
+#             - StripPrefix=1
+#             - AddPrefix=/hello
