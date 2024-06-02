@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xxdannilinxx.todosimple.log.Log;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -11,9 +13,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Others", description = "Others for api")
 public class OthersController {
 
-    // teste de threads virtuais, mas somente no java ^19
+    @Log
     @GetMapping
     public String get() throws InterruptedException {
+        // AOP - Log
+        // Não funciona em meotodos privados
+
+        // Teste de threads virtuais
         Thread.sleep(3000);
         return "others";
     }
