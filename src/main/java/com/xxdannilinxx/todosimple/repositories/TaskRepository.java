@@ -24,4 +24,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     // Query 3
     @Query(nativeQuery = true, value = "SELECT * FROM task WHERE id = :id")
     List<Task> findByTask_Id(@Param("id") Long id);
+
+    // Query 4
+    // @PreRemove
 }
